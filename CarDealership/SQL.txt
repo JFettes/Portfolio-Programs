@@ -1,0 +1,50 @@
+CREATE DATABASE IF NOT EXISTS CarDealership;
+USE CarDealership;
+
+CREATE TABLE IF NOT EXISTS manufacturers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+INSERT INTO manufacturers (name) VALUES ('Toyota'), ('Honda'), ('Ford');
+
+CREATE TABLE IF NOT EXISTS models (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    manufacturer_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (manufacturer_id) REFERENCES manufacturers(id)
+);
+
+INSERT INTO models (manufacturer_id, name) VALUES
+(1, 'Camry'), (1, 'Corolla'), (1, 'Prius'),
+(2, 'Civic'), (2, 'Accord'), (2, 'Fit'),
+(3, 'Mustang'), (3, 'F-150'), (3, 'Escape');
+
+CREATE TABLE IF NOT EXISTS sellers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    contact_info VARCHAR(255) NOT NULL
+);
+
+INSERT INTO sellers (name, contact_info) VALUES
+('John Doe', 'johndoe@example.com'),
+('Jane Smith', 'janesmith@example.com'),
+('Bob Johnson', 'bobjohnson@example.com');
+
+CREATE TABLE IF NOT EXISTS cars (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    make_id INT NOT NULL,
+    model_id INT NOT NULL,
+    seller_id INT NOT NULL,
+    year INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    description TEXT NOT NULL,
+    FOREIGN KEY (make_id) REFERENCES manufacturers(id),
+    FOREIGN KEY (model_id) REFERENCES models(id),
+    FOREIGN KEY (seller_id) REFERENCES sellers(id)
+);
+
+INSERT INTO cars (make_id, model_id, seller_id, year, price, description) VALUES
+(1, 1, 1, 2015, 15000.00, 'Well-maintained with low mileage.'),
+(2, 4, 2, 2018, 18000.00, 'Excellent condition.'),
+(3, 7, 3, 2020, 30000.00, 'ONE OWNER.');
